@@ -5,10 +5,16 @@
 </head>
 <body>
     <h1>Fitbit OAuth Callback</h1>
-    <p>You can close this window now and return to R.</p>
+    <p id="status">Processing authentication...</p>
     <script>
-        if (window.location.hash) {
-            document.write('Authentication successful! You can close this window.');
+        // Check for authorization code in URL hash or query parameters
+        const params = new URLSearchParams(window.location.search);
+        const hash = new URLSearchParams(window.location.hash.substring(1));
+        
+        if (params.has('code') || hash.has('code')) {
+            document.getElementById('status').textContent = 'Authentication successful! You can close this window.';
+        } else if (params.has('error') || hash.has('error')) {
+            document.getElementById('status').textContent = 'Authentication failed: ' + (params.get('error') || hash.get('error'));
         }
     </script>
 </body>
