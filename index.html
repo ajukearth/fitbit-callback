@@ -5,37 +5,11 @@
 </head>
 <body>
     <h1>Fitbit OAuth Callback</h1>
-    <div id="status">Processing...</div>
-
+    <p>You can close this window now and return to R.</p>
     <script>
-        function processCallback() {
-            // Get the code from URL parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            const code = urlParams.get('code');
-            
-            if (code) {
-                // Display code and instructions
-                document.getElementById('status').innerHTML = `
-                    <p>Authentication successful!</p>
-                    <p>Code received: <code>${code}</code></p>
-                    <p>Please keep this window open while R processes the authentication.</p>
-                    <p>If R doesn't continue after 30 seconds, you may need to restart the process.</p>
-                `;
-
-                // Try multiple methods to signal R
-                if (window.opener) {
-                    window.opener.postMessage({ type: 'oauth2', code: code }, '*');
-                }
-                
-                // Also try redirecting with the code
-                window.location.replace(window.location.origin + window.location.pathname + '#' + code);
-            } else {
-                document.getElementById('status').textContent = 'No authorization code found in URL parameters.';
-            }
+        if (window.location.hash) {
+            document.write('Authentication successful! You can close this window.');
         }
-
-        // Run when page loads
-        window.onload = processCallback;
     </script>
 </body>
 </html>
