@@ -2,20 +2,32 @@
 <html>
 <head>
     <title>Fitbit OAuth Callback</title>
+    <script>
+        window.onload = function() {
+            // Get the authorization code from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const authCode = urlParams.get('code');
+            
+            if (authCode) {
+                // If we have a code, display it and make it easily copyable
+                document.body.innerHTML = `
+                    <h1>Fitbit OAuth Callback</h1>
+                    <p>Authentication successful!</p>
+                    <p>If R doesn't automatically continue, copy this code:</p>
+                    <textarea onclick="this.select()" readonly style="width: 100%; height: 50px;">${authCode}</textarea>
+                    <p>You can close this window after copying the code.</p>
+                `;
+            } else {
+                document.body.innerHTML = `
+                    <h1>Fitbit OAuth Callback</h1>
+                    <p>No authorization code found in the URL.</p>
+                `;
+            }
+        }
+    </script>
 </head>
 <body>
     <h1>Fitbit OAuth Callback</h1>
-    <p id="status">Processing authentication...</p>
-    <script>
-        // Check for authorization code in URL hash or query parameters
-        const params = new URLSearchParams(window.location.search);
-        const hash = new URLSearchParams(window.location.hash.substring(1));
-        
-        if (params.has('code') || hash.has('code')) {
-            document.getElementById('status').textContent = 'Authentication successful! You can close this window.';
-        } else if (params.has('error') || hash.has('error')) {
-            document.getElementById('status').textContent = 'Authentication failed: ' + (params.get('error') || hash.get('error'));
-        }
-    </script>
+    <p>Loading...</p>
 </body>
 </html>
