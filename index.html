@@ -5,10 +5,21 @@
 </head>
 <body>
     <h1>Fitbit OAuth Callback</h1>
-    <p>You can close this window now and return to R.</p>
+    <p id="status">Processing authentication...</p>
     <script>
-        if (window.location.hash) {
-            document.write('Authentication successful! You can close this window.');
+        // Check for authorization code in URL
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code');
+        
+        if (code) {
+            document.getElementById('status').innerHTML = `
+                <p>Authentication successful!</p>
+                <p>Please copy this code:</p>
+                <textarea onclick="this.select()" readonly style="width: 100%; height: 50px;">${code}</textarea>
+                <p>You can close this window after copying the code.</p>
+            `;
+        } else {
+            document.getElementById('status').textContent = 'No authorization code found. Please try again.';
         }
     </script>
 </body>
